@@ -70,7 +70,7 @@ app.post('/accept-payment', async (req, res) => {
 app.post('/webhook', async (req, res) => {
 
   console.log("here is the webhook")
-  console.log('body: ', req.body);
+  // console.log('body: ', req.body);
 
   try {
     const hash = crypto
@@ -104,8 +104,10 @@ app.post('/webhook', async (req, res) => {
   const course = metaObject.course;
   const schedule = metaObject.schedule;
   const phone = metaObject.phone;
-  
+
+  console.log("COURSE", course)
   console.log('body: ', req.body);
+  
   res.send(200);
   } catch (e) {
     res.status(400).json({
