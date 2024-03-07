@@ -7,6 +7,8 @@ require('dotenv').config();
 const axios = require('axios');
 const PORT = 5000;
 const CHAPA_AUTH_KEY = process.env.CHAPA_AUTH_KEY; //Put Your Chapa Secret Key
+const crypto = require('crypto');
+const secret = process.env.SECRET_HASH;
 
 app.post('/accept-payment', async (req, res) => {
   const {
@@ -57,6 +59,51 @@ app.post('/accept-payment', async (req, res) => {
         });
       });
     res.status(200).json(resp.data);
+  } catch (e) {
+    res.status(400).json({
+      error_code: e.code,
+      message: e.message,
+    });
+  }
+});
+
+app.post('/webhook', async (req, res) => {
+
+  try {
+    const hash = crypto
+    .createHmac('sha256', secret)
+    .update(JSON.stringify(req.body))
+    .digest('hex');
+  const receivedSignature = req.headers['chapa-signature'];
+  const alternativeSignature = req.headers['x-chapa-signature'];
+
+  if (!receivedSignature && !alternativeSignature) {
+    return res.status(400).send('No signature found');
+  }
+
+  if (hash !== receivedSignature && hash !== alternativeSignature) {
+    return res.status(400).send('Invalid signature');
+  }
+
+  const {
+    amount,
+    currency,
+    email,
+    first_name,
+    last_name,
+    mobile,
+    tx_ref,
+    reference,
+  } = req.body;
+
+  // Parse the JSON string stored in the meta field
+  const metaObject = JSON.parse(req.body.meta);
+  const course = metaObject.course;
+  const schedule = metaObject.schedule;
+  const phone = metaObject.phone;
+  
+  console.log('body: ', req.body);
+  res.send(200);
   } catch (e) {
     res.status(400).json({
       error_code: e.code,
