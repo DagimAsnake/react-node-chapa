@@ -18,7 +18,7 @@ app.post('/accept-payment', async (req, res) => {
     phone_number,
     tx_ref,
   } = req.body;
-  console.log(req.body)
+  // console.log(req.body);
 
   try {
     const header = {
@@ -35,6 +35,11 @@ app.post('/accept-payment', async (req, res) => {
       last_name: last_name,
       phone_number: phone_number,
       tx_ref: tx_ref,
+      meta: {
+        course: "this is course",
+        schedule: "this is schedule",
+        phone: "this is phone number",
+      },
       return_url: 'http://localhost:3000/',
     };
     let resp = '';

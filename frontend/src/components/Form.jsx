@@ -24,9 +24,12 @@ const FormComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // const urlDev = 'http://localhost:5000/accept-payment'
+    const urlPro = "https://react-node-chapa.onrender.com/accept-payment"
+
     try {
       const res = await axios.post(
-        'http://localhost:5000/accept-payment',
+        urlPro,
         {
             amount: form.amount,
             currency: form.currency,
