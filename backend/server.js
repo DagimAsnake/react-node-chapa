@@ -69,6 +69,8 @@ app.post('/accept-payment', async (req, res) => {
 
 app.post('/webhook', async (req, res) => {
 
+  console.log("here is the webhook")
+
   try {
     const hash = crypto
     .createHmac('sha256', secret)
