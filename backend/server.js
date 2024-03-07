@@ -70,6 +70,7 @@ app.post('/accept-payment', async (req, res) => {
 app.post('/webhook', async (req, res) => {
 
   console.log("here is the webhook")
+  console.log('body: ', req.body);
 
   try {
     const hash = crypto
